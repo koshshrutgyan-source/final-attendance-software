@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Employee</title>
+<style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .card { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
+    h2 { text-align: center; margin-bottom: 20px; }
+    label { font-weight: bold; margin-top: 10px; display: block; }
+    input, select { width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 15px; }
+    button { width: 100%; padding: 12px; background: #667eea; border: none; color: #fff; font-weight: bold; border-radius: 8px; cursor: pointer; }
+    button:hover { background: #764ba2; }
+    .flash { margin-bottom: 15px; padding: 10px; border-radius: 8px; color: #fff; font-weight: 600; text-align: center; }
+    .flash-danger { background-color: #e74c3c; }
+    .flash-success { background-color: #2ecc71; }
+</style>
+</head>
+<body>
+<div class="card">
+<h2>Edit Employee</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash flash-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+{% if emp.unique_phrase %}
+<div style="background:#f0f2f5; padding:15px; border-radius:10px; margin-bottom:15px; text-align:center;">
+    <strong>Unique Phrase:</strong>
+    <span id="uniquePhrase" style="font-family: monospace; font-weight:bold;">{{ emp.unique_phrase }}</span>
+    <button onclick="copyUniquePhrase()" style="margin-left:10px; padding:5px 10px; border:none; background:#667eea; color:white; border-radius:5px; cursor:pointer;">Copy</button>
+</div>
+<script>
+    function copyUniquePhrase() {
+        var copyText = document.getElementById("uniquePhrase").innerText;
+        navigator.clipboard.writeText(copyText).then(() => {
+            alert("Unique phrase copied!");
+        });
+    }
+</script>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data">
+    <label>Name:</label>
+    <input type="text" name="name" value="{{ emp.name }}" required>
+
+    <label>Employee ID:</label>
+    <input type="text" name="emp_id" value="{{ emp.emp_id }}" required>
+
+    <label>Password (leave empty to keep current):</label>
+    <input type="password" name="password" placeholder="Enter new password">
+
+    <label>Gender:</label>
+    <select name="gender">
+        <option value="Male" {% if emp.gender=='Male' %}selected{% endif %}>Male</option>
+        <option value="Female" {% if emp.gender=='Female' %}selected{% endif %}>Female</option>
+    </select>
+
+    <label>Address:</label>
+    <input type="text" name="address" value="{{ emp.address }}">
+
+    <label>Mobile Number:</label>
+    <input type="text" name="mobile_number" value="{{ emp.mobile_number }}">
+
+    <label>Date of Birth:</label>
+    <input type="date" name="date_of_birth" value="{{ emp.date_of_birth }}">
+
+    <label>Email:</label>
+    <input type="email" name="email" value="{{ emp.email }}">
+
+    <label>Unique Phrase:</label>
+    <input type="text" name="unique_phrase" value="{{ emp.unique_phrase }}" readonly>
+
+    <label>Change Image:</label>
+    <input type="file" name="image">
+
+    <button type="submit">Update Employee</button>
+</form>
+</div>
+</body>
+</html>

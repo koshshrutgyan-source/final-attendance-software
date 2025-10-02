@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard - Employees</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        a, button {
+            padding: 5px 10px;
+            margin: 2px;
+            border-radius: 5px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+        a {
+            background: #28a745;
+            color: white;
+        }
+        a:hover {
+            background: #218838;
+        }
+        button {
+            background: #dc3545;
+            color: white;
+        }
+        button:hover {
+            background: #c82333;
+        }
+        .top-bar {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .top-bar a {
+            background: #007bff;
+        }
+        .top-bar a:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <h2>Employee List</h2>
+        <a href="{{ url_for('add_employee') }}">Add New Employee</a>
+        <a href="{{ url_for('admin_logout') }}">Logout</a>
+        <div class="top-actions">
+    <a href="{{ url_for('admin_notifications') }}">Push Notification / Alert to Employees</a>
+</div>
+        <a href="{{ url_for('admin_employee_requests') }}">View Employee Requests</a>
+    </div>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Employee ID</th>
+            <th>Gender</th>
+            <th>Address</th>
+            <th>Mobile</th>
+            <th>Date of Birth</th>
+            <th>Email</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+        {% for emp in employees %}
+        <tr>
+            <td>{{ emp.name }}</td>
+            <td>{{ emp.emp_id }}</td>
+            <td>{{ emp.gender }}</td>
+            <td>{{ emp.address }}</td>
+            <td>{{ emp.mobile_number }}</td>
+            <td>{{ emp.date_of_birth }}</td>
+            <td>{{ emp.email }}</td>
+            <td>
+                {% if emp.image %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ emp.image) }}" alt="Employee Image">
+                {% endif %}
+            </td>
+            <td>
+                <a href="{{ url_for('edit_employee', emp_id=emp.id) }}">Edit</a>
+                <form method="POST" action="{{ url_for('delete_employee', emp_id=emp.id) }}" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Login</title>
+    <style>
+        /* --- Reset & Body --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        /* --- Login Card --- */
+        .login-card {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .login-card h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+            font-weight: 700;
+        }
+
+        /* --- Form --- */
+        .login-card form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-card input[type="text"],
+        .login-card input[type="password"] {
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .login-card input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+            outline: none;
+        }
+
+        /* --- Buttons --- */
+        .login-card button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #667eea;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-card button:hover {
+            background: #764ba2;
+        }
+
+        /* --- Flash messages --- */
+        .flash {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .flash-danger { background-color: #e74c3c; }
+        .flash-success { background-color: #2ecc71; }
+        .flash-warning { background-color: #f39c12; }
+
+        /* --- Animation --- */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>Employee Login</h2>
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <input type="text" name="emp_id" placeholder="Employee ID" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+<!-- Below the login button -->
+<div style="text-align:center; margin-top: 10px;">
+    <a href="{{ url_for('employee_forgot_password') }}" style="color: #667eea; text-decoration: none; font-weight: bold;">
+        Forgot Password?
+    </a>
+</div>
+</body>
+</html>
